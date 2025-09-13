@@ -21,29 +21,24 @@ import {
   FileText,
   TrendingUp,
   Calendar,
+  Menu,
+  X,
 } from "lucide-react"
 
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts"
-
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("dashboard")
-const data = [
-  { name: "Jan", users: 30 },
-  { name: "Feb", users: 45 },
-  { name: "Mar", users: 60 },
-  { name: "Apr", users: 50 },
-  { name: "May", users: 80 },
-  { name: "Jun", users: 65 },
-]
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const data = [
+    { name: "Jan", users: 30 },
+    { name: "Feb", users: 45 },
+    { name: "Mar", users: 60 },
+    { name: "Apr", users: 50 },
+    { name: "May", users: 80 },
+    { name: "Jun", users: 65 },
+  ]
   const plansData = [
     {
       id: 1,
@@ -236,13 +231,13 @@ const data = [
   const renderDashboard = () => (
     <div className="space-y-8">
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <Card className="bg-white border border-gray-200">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-gray-600">Active Subscriptions</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-gray-900">1,234</div>
+            <div className="text-2xl md:text-3xl font-bold text-gray-900">1,234</div>
             <p className="text-xs text-green-600 mt-1">+12% from last month</p>
           </CardContent>
         </Card>
@@ -252,7 +247,7 @@ const data = [
             <CardTitle className="text-sm font-medium text-gray-600">Cancelled (This Month)</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-gray-900">56</div>
+            <div className="text-2xl md:text-3xl font-bold text-gray-900">56</div>
             <p className="text-xs text-red-600 mt-1">-8% from last month</p>
           </CardContent>
         </Card>
@@ -262,7 +257,7 @@ const data = [
             <CardTitle className="text-sm font-medium text-gray-600">Most Popular Plan</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-xl font-semibold text-teal-500">Fibernet 100 Mbps</div>
+            <div className="text-lg md:text-xl font-semibold text-teal-500">Fibernet 100 Mbps</div>
             <p className="text-xs text-gray-500 mt-1">45% of all subscriptions</p>
           </CardContent>
         </Card>
@@ -272,7 +267,7 @@ const data = [
             <CardTitle className="text-sm font-medium text-gray-600">Monthly Revenue</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-gray-900">$28,450</div>
+            <div className="text-2xl md:text-3xl font-bold text-gray-900">$28,450</div>
             <p className="text-xs text-green-600 mt-1">+18% from last month</p>
           </CardContent>
         </Card>
@@ -280,16 +275,22 @@ const data = [
 
       {/* Manage Plans Section */}
       <div className="space-y-4">
-        <h2 className="text-2xl font-bold text-gray-900">Manage Plans</h2>
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900">Manage Plans</h2>
+        <div className="bg-white rounded-lg border border-gray-200 overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow className="bg-teal-500 hover:bg-teal-500 border-none">
-                <TableHead className="text-white font-semibold text-center bg-teal-500">Plan Name</TableHead>
-                <TableHead className="text-white font-semibold text-center bg-teal-500">Price</TableHead>
-                <TableHead className="text-white font-semibold text-center bg-teal-500">Quota</TableHead>
-                <TableHead className="text-white font-semibold text-center bg-teal-500">Duration months</TableHead>
-                <TableHead className="text-white font-semibold text-center bg-teal-500">Actions</TableHead>
+                <TableHead className="text-white font-semibold text-center bg-teal-500 min-w-[150px]">
+                  Plan Name
+                </TableHead>
+                <TableHead className="text-white font-semibold text-center bg-teal-500 min-w-[80px]">Price</TableHead>
+                <TableHead className="text-white font-semibold text-center bg-teal-500 min-w-[80px]">Quota</TableHead>
+                <TableHead className="text-white font-semibold text-center bg-teal-500 min-w-[120px]">
+                  Duration months
+                </TableHead>
+                <TableHead className="text-white font-semibold text-center bg-teal-500 min-w-[120px]">
+                  Actions
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -300,7 +301,7 @@ const data = [
                   <TableCell className="text-center">{plan.quota}</TableCell>
                   <TableCell className="text-center">{plan.duration}</TableCell>
                   <TableCell className="text-center">
-                    <div className="flex gap-2 justify-center">
+                    <div className="flex flex-col sm:flex-row gap-2 justify-center">
                       <Button size="sm" className="h-7 px-3 bg-gray-800 hover:bg-gray-900 text-white text-xs">
                         Edit
                       </Button>
@@ -318,16 +319,24 @@ const data = [
 
       {/* Manage Discounts Section */}
       <div className="space-y-4">
-        <h2 className="text-2xl font-bold text-gray-900">Manage Discounts</h2>
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900">Manage Discounts</h2>
+        <div className="bg-white rounded-lg border border-gray-200 overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow className="bg-teal-500 hover:bg-teal-500 border-none">
-                <TableHead className="text-white font-semibold text-center bg-teal-500">Discount Name</TableHead>
-                <TableHead className="text-white font-semibold text-center bg-teal-500">Percentage</TableHead>
-                <TableHead className="text-white font-semibold text-center bg-teal-500">Condition</TableHead>
-                <TableHead className="text-white font-semibold text-center bg-teal-500">Status</TableHead>
-                <TableHead className="text-white font-semibold text-center bg-teal-500">Actions</TableHead>
+                <TableHead className="text-white font-semibold text-center bg-teal-500 min-w-[150px]">
+                  Discount Name
+                </TableHead>
+                <TableHead className="text-white font-semibold text-center bg-teal-500 min-w-[100px]">
+                  Percentage
+                </TableHead>
+                <TableHead className="text-white font-semibold text-center bg-teal-500 min-w-[120px]">
+                  Condition
+                </TableHead>
+                <TableHead className="text-white font-semibold text-center bg-teal-500 min-w-[80px]">Status</TableHead>
+                <TableHead className="text-white font-semibold text-center bg-teal-500 min-w-[150px]">
+                  Actions
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -346,7 +355,7 @@ const data = [
                     </span>
                   </TableCell>
                   <TableCell className="text-center">
-                    <div className="flex gap-2 justify-center">
+                    <div className="flex flex-col sm:flex-row gap-2 justify-center">
                       {discount.status === "Active" ? (
                         <Button size="sm" className="h-7 px-3 bg-gray-800 hover:bg-gray-900 text-white text-xs">
                           Deactivate
@@ -370,21 +379,21 @@ const data = [
 
       {/* Analytics Section */}
       <div className="space-y-4">
-        <h2 className="text-2xl font-bold text-gray-900">Analytics</h2>
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900">Analytics</h2>
+        <div className="bg-white rounded-lg border border-gray-200 p-4 md:p-6">
           <div className="text-center text-gray-500">
             <BarChart3 className="h-12 w-12 mx-auto mb-4 opacity-50" />
-             <div className="h-72">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data} margin={{ top: 20, right: 20, left: 0, bottom: 20 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="users" fill="#6366f1" radius={[6, 6, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+            <div className="h-64 md:h-72">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={data} margin={{ top: 20, right: 20, left: 0, bottom: 20 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="users" fill="#6366f1" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
       </div>
@@ -393,120 +402,124 @@ const data = [
 
   const renderPlans = () => (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Manage Plans</h2>
-        <Button className="bg-teal-600 hover:bg-teal-700">Add New Plan</Button>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+        <h2 className="text-xl md:text-2xl font-bold">Manage Plans</h2>
+        <Button className="bg-teal-600 hover:bg-teal-700 w-full sm:w-auto">Add New Plan</Button>
       </div>
 
       <Card>
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-teal-600 hover:bg-teal-600 border-none">
-              <TableHead className="text-white font-semibold bg-teal-600">Plan Name</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Price</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Quota</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Duration months</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {plansData.map((plan) => (
-              <TableRow key={plan.id}>
-                <TableCell className="font-medium">{plan.name}</TableCell>
-                <TableCell>{plan.price}</TableCell>
-                <TableCell>{plan.quota}</TableCell>
-                <TableCell>
-                  <Badge variant="secondary">{plan.durationMonths}</Badge>
-                </TableCell>
-                <TableCell>
-                  <div className="flex gap-2">
-                    <Button size="sm" variant="outline" className="h-8 px-3 bg-transparent">
-                      <Edit className="h-3 w-3 mr-1" />
-                      Edit
-                    </Button>
-                    <Button size="sm" variant="destructive" className="h-8 px-3">
-                      <Trash2 className="h-3 w-3 mr-1" />
-                      Delete
-                    </Button>
-                  </div>
-                </TableCell>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-teal-600 hover:bg-teal-600 border-none">
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[150px]">Plan Name</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[80px]">Price</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[80px]">Quota</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[120px]">Duration months</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[150px]">Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {plansData.map((plan) => (
+                <TableRow key={plan.id}>
+                  <TableCell className="font-medium">{plan.name}</TableCell>
+                  <TableCell>{plan.price}</TableCell>
+                  <TableCell>{plan.quota}</TableCell>
+                  <TableCell>
+                    <Badge variant="secondary">{plan.durationMonths}</Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <Button size="sm" variant="outline" className="h-8 px-3 bg-transparent">
+                        <Edit className="h-3 w-3 mr-1" />
+                        Edit
+                      </Button>
+                      <Button size="sm" variant="destructive" className="h-8 px-3">
+                        <Trash2 className="h-3 w-3 mr-1" />
+                        Delete
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </Card>
     </div>
   )
 
   const renderDiscounts = () => (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Manage Discounts</h2>
-        <Button className="bg-teal-600 hover:bg-teal-700">Add New Discount</Button>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+        <h2 className="text-xl md:text-2xl font-bold">Manage Discounts</h2>
+        <Button className="bg-teal-600 hover:bg-teal-700 w-full sm:w-auto">Add New Discount</Button>
       </div>
 
       <Card>
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-teal-600 hover:bg-teal-600 border-none">
-              <TableHead className="text-white font-semibold bg-teal-600">Discount Name</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Percentage</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Condition</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Status</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {discountsData.map((discount) => (
-              <TableRow key={discount.id}>
-                <TableCell className="font-medium">{discount.name}</TableCell>
-                <TableCell>{discount.percentage}</TableCell>
-                <TableCell>{discount.condition}</TableCell>
-                <TableCell>
-                  <Badge
-                    variant={discount.status === "Active" ? "default" : "destructive"}
-                    className={discount.status === "Active" ? "bg-green-600" : ""}
-                  >
-                    {discount.status}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <div className="flex gap-2">
-                    {discount.status === "Active" ? (
-                      <Button size="sm" variant="outline" className="h-8 px-3 bg-transparent">
-                        <PowerOff className="h-3 w-3 mr-1" />
-                        Deactivate
-                      </Button>
-                    ) : (
-                      <Button size="sm" variant="outline" className="h-8 px-3 bg-transparent">
-                        <Power className="h-3 w-3 mr-1" />
-                        Activate
-                      </Button>
-                    )}
-                    <Button size="sm" variant="destructive" className="h-8 px-3">
-                      <Trash2 className="h-3 w-3 mr-1" />
-                      Delete
-                    </Button>
-                  </div>
-                </TableCell>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-teal-600 hover:bg-teal-600 border-none">
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[150px]">Discount Name</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[100px]">Percentage</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[120px]">Condition</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[80px]">Status</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[150px]">Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {discountsData.map((discount) => (
+                <TableRow key={discount.id}>
+                  <TableCell className="font-medium">{discount.name}</TableCell>
+                  <TableCell>{discount.percentage}</TableCell>
+                  <TableCell>{discount.condition}</TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={discount.status === "Active" ? "default" : "destructive"}
+                      className={discount.status === "Active" ? "bg-green-600" : ""}
+                    >
+                      {discount.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      {discount.status === "Active" ? (
+                        <Button size="sm" variant="outline" className="h-8 px-3 bg-transparent">
+                          <PowerOff className="h-3 w-3 mr-1" />
+                          Deactivate
+                        </Button>
+                      ) : (
+                        <Button size="sm" variant="outline" className="h-8 px-3 bg-transparent">
+                          <Power className="h-3 w-3 mr-1" />
+                          Activate
+                        </Button>
+                      )}
+                      <Button size="sm" variant="destructive" className="h-8 px-3">
+                        <Trash2 className="h-3 w-3 mr-1" />
+                        Delete
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </Card>
     </div>
   )
 
   const renderAnalytics = () => (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Analytics</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <h2 className="text-xl md:text-2xl font-bold">Analytics</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Total Revenue</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$45,231</div>
+            <div className="text-xl md:text-2xl font-bold">$45,231</div>
             <p className="text-xs text-muted-foreground">+20.1% from last month</p>
           </CardContent>
         </Card>
@@ -516,7 +529,7 @@ const data = [
             <CardTitle className="text-sm font-medium text-muted-foreground">New Subscriptions</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+2,350</div>
+            <div className="text-xl md:text-2xl font-bold">+2,350</div>
             <p className="text-xs text-muted-foreground">+180.1% from last month</p>
           </CardContent>
         </Card>
@@ -526,7 +539,7 @@ const data = [
             <CardTitle className="text-sm font-medium text-muted-foreground">Churn Rate</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">4.5%</div>
+            <div className="text-xl md:text-2xl font-bold">4.5%</div>
             <p className="text-xs text-muted-foreground">-2.1% from last month</p>
           </CardContent>
         </Card>
@@ -536,7 +549,7 @@ const data = [
             <CardTitle className="text-sm font-medium text-muted-foreground">Active Plans</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">12</div>
+            <div className="text-xl md:text-2xl font-bold">12</div>
             <p className="text-xs text-muted-foreground">+2 new plans this month</p>
           </CardContent>
         </Card>
@@ -576,227 +589,235 @@ const data = [
 
   const renderUsers = () => (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">User Management</h2>
-        <Button className="bg-teal-600 hover:bg-teal-700">Add New User</Button>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+        <h2 className="text-xl md:text-2xl font-bold">User Management</h2>
+        <Button className="bg-teal-600 hover:bg-teal-700 w-full sm:w-auto">Add New User</Button>
       </div>
 
       <Card>
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-teal-600 hover:bg-teal-600 border-none">
-              <TableHead className="text-white font-semibold bg-teal-600">Name</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Email</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Role</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Subscriptions</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Status</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Join Date</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {usersData.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell className="font-medium">{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>
-                  <Badge variant={user.role === "admin" ? "default" : "secondary"}>{user.role}</Badge>
-                </TableCell>
-                <TableCell>{user.subscriptions}</TableCell>
-                <TableCell>
-                  <Badge variant={user.status === "active" ? "default" : "destructive"} className="bg-green-600">
-                    {user.status}
-                  </Badge>
-                </TableCell>
-                <TableCell>{user.joinDate}</TableCell>
-                <TableCell>
-                  <div className="flex gap-2">
-                    <Button size="sm" variant="outline" className="h-8 px-3 bg-transparent">
-                      <Edit className="h-3 w-3 mr-1" />
-                      Edit
-                    </Button>
-                    <Button size="sm" variant="destructive" className="h-8 px-3">
-                      <Trash2 className="h-3 w-3 mr-1" />
-                      Delete
-                    </Button>
-                  </div>
-                </TableCell>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-teal-600 hover:bg-teal-600 border-none">
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[120px]">Name</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[180px]">Email</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[80px]">Role</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[120px]">Subscriptions</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[80px]">Status</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[100px]">Join Date</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[150px]">Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {usersData.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell className="font-medium">{user.name}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>
+                    <Badge variant={user.role === "admin" ? "default" : "secondary"}>{user.role}</Badge>
+                  </TableCell>
+                  <TableCell>{user.subscriptions}</TableCell>
+                  <TableCell>
+                    <Badge variant={user.status === "active" ? "default" : "destructive"} className="bg-green-600">
+                      {user.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>{user.joinDate}</TableCell>
+                  <TableCell>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <Button size="sm" variant="outline" className="h-8 px-3 bg-transparent">
+                        <Edit className="h-3 w-3 mr-1" />
+                        Edit
+                      </Button>
+                      <Button size="sm" variant="destructive" className="h-8 px-3">
+                        <Trash2 className="h-3 w-3 mr-1" />
+                        Delete
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </Card>
     </div>
   )
 
   const renderSubscriptions = () => (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Subscription Management</h2>
-        <Button className="bg-teal-600 hover:bg-teal-700">Create Subscription</Button>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+        <h2 className="text-xl md:text-2xl font-bold">Subscription Management</h2>
+        <Button className="bg-teal-600 hover:bg-teal-700 w-full sm:w-auto">Create Subscription</Button>
       </div>
 
       <Card>
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-teal-600 hover:bg-teal-600 border-none">
-              <TableHead className="text-white font-semibold bg-teal-600">User</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Plan</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Price</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Start Date</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">End Date</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Status</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Auto Renew</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {subscriptionsData.map((subscription) => (
-              <TableRow key={subscription.id}>
-                <TableCell className="font-medium">{subscription.userName}</TableCell>
-                <TableCell>{subscription.planName}</TableCell>
-                <TableCell>{subscription.price}</TableCell>
-                <TableCell>{subscription.startDate}</TableCell>
-                <TableCell>{subscription.endDate}</TableCell>
-                <TableCell>
-                  <Badge
-                    variant={
-                      subscription.status === "active"
-                        ? "default"
-                        : subscription.status === "expired"
-                          ? "secondary"
-                          : "destructive"
-                    }
-                    className={subscription.status === "active" ? "bg-green-600" : ""}
-                  >
-                    {subscription.status}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <Badge variant={subscription.autoRenew ? "default" : "secondary"}>
-                    {subscription.autoRenew ? "Yes" : "No"}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <div className="flex gap-2">
-                    <Button size="sm" variant="outline" className="h-8 px-3 bg-transparent">
-                      <Edit className="h-3 w-3 mr-1" />
-                      Edit
-                    </Button>
-                    {subscription.status === "active" && (
-                      <Button size="sm" variant="destructive" className="h-8 px-3">
-                        Cancel
-                      </Button>
-                    )}
-                  </div>
-                </TableCell>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-teal-600 hover:bg-teal-600 border-none">
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[120px]">User</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[150px]">Plan</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[80px]">Price</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[100px]">Start Date</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[100px]">End Date</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[80px]">Status</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[100px]">Auto Renew</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[120px]">Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {subscriptionsData.map((subscription) => (
+                <TableRow key={subscription.id}>
+                  <TableCell className="font-medium">{subscription.userName}</TableCell>
+                  <TableCell>{subscription.planName}</TableCell>
+                  <TableCell>{subscription.price}</TableCell>
+                  <TableCell>{subscription.startDate}</TableCell>
+                  <TableCell>{subscription.endDate}</TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={
+                        subscription.status === "active"
+                          ? "default"
+                          : subscription.status === "expired"
+                            ? "secondary"
+                            : "destructive"
+                      }
+                      className={subscription.status === "active" ? "bg-green-600" : ""}
+                    >
+                      {subscription.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={subscription.autoRenew ? "default" : "secondary"}>
+                      {subscription.autoRenew ? "Yes" : "No"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <Button size="sm" variant="outline" className="h-8 px-3 bg-transparent">
+                        <Edit className="h-3 w-3 mr-1" />
+                        Edit
+                      </Button>
+                      {subscription.status === "active" && (
+                        <Button size="sm" variant="destructive" className="h-8 px-3">
+                          Cancel
+                        </Button>
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </Card>
     </div>
   )
 
   const renderUsage = () => (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Usage Tracking</h2>
+      <h2 className="text-xl md:text-2xl font-bold">Usage Tracking</h2>
 
       <Card>
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-teal-600 hover:bg-teal-600 border-none">
-              <TableHead className="text-white font-semibold bg-teal-600">User</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Plan</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Data Used</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Quota</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Usage %</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Period</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {usageData.map((usage) => (
-              <TableRow key={usage.id}>
-                <TableCell className="font-medium">{usage.userName}</TableCell>
-                <TableCell>{usage.planName}</TableCell>
-                <TableCell>{usage.dataUsed}</TableCell>
-                <TableCell>{usage.quota}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <div className="w-16 bg-gray-200 rounded-full h-2">
-                      <div
-                        className={`h-2 rounded-full ${
-                          usage.percentage > 90
-                            ? "bg-red-500"
-                            : usage.percentage > 70
-                              ? "bg-yellow-500"
-                              : "bg-green-500"
-                        }`}
-                        style={{ width: `${usage.percentage}%` }}
-                      ></div>
-                    </div>
-                    <span className="text-sm">{usage.percentage}%</span>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  {usage.month} {usage.year}
-                </TableCell>
-                <TableCell>
-                  <Badge
-                    variant={usage.percentage > 90 ? "destructive" : usage.percentage > 70 ? "secondary" : "default"}
-                    className={usage.percentage <= 70 ? "bg-green-600" : ""}
-                  >
-                    {usage.percentage > 90 ? "High" : usage.percentage > 70 ? "Medium" : "Normal"}
-                  </Badge>
-                </TableCell>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-teal-600 hover:bg-teal-600 border-none">
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[120px]">User</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[150px]">Plan</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[100px]">Data Used</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[80px]">Quota</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[120px]">Usage %</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[100px]">Period</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[80px]">Status</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {usageData.map((usage) => (
+                <TableRow key={usage.id}>
+                  <TableCell className="font-medium">{usage.userName}</TableCell>
+                  <TableCell>{usage.planName}</TableCell>
+                  <TableCell>{usage.dataUsed}</TableCell>
+                  <TableCell>{usage.quota}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <div className="w-16 bg-gray-200 rounded-full h-2">
+                        <div
+                          className={`h-2 rounded-full ${
+                            usage.percentage > 90
+                              ? "bg-red-500"
+                              : usage.percentage > 70
+                                ? "bg-yellow-500"
+                                : "bg-green-500"
+                          }`}
+                          style={{ width: `${usage.percentage}%` }}
+                        ></div>
+                      </div>
+                      <span className="text-sm">{usage.percentage}%</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {usage.month} {usage.year}
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={usage.percentage > 90 ? "destructive" : usage.percentage > 70 ? "secondary" : "default"}
+                      className={usage.percentage <= 70 ? "bg-green-600" : ""}
+                    >
+                      {usage.percentage > 90 ? "High" : usage.percentage > 70 ? "Medium" : "Normal"}
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </Card>
     </div>
   )
 
   const renderAuditLogs = () => (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Audit Logs</h2>
+      <h2 className="text-xl md:text-2xl font-bold">Audit Logs</h2>
 
       <Card>
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-teal-600 hover:bg-teal-600 border-none">
-              <TableHead className="text-white font-semibold bg-teal-600">Actor</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Action</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Type</TableHead>
-              <TableHead className="text-white font-semibold bg-teal-600">Timestamp</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {auditLogsData.map((log) => (
-              <TableRow key={log.id}>
-                <TableCell className="font-medium">{log.actorName}</TableCell>
-                <TableCell>{log.action}</TableCell>
-                <TableCell>
-                  <Badge
-                    variant={
-                      log.type === "plan_creation"
-                        ? "default"
-                        : log.type === "subscription"
-                          ? "secondary"
-                          : log.type === "discount_update"
-                            ? "outline"
-                            : "destructive"
-                    }
-                  >
-                    {log.type.replace("_", " ")}
-                  </Badge>
-                </TableCell>
-                <TableCell>{log.timestamp}</TableCell>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-teal-600 hover:bg-teal-600 border-none">
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[120px]">Actor</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[200px]">Action</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[120px]">Type</TableHead>
+                <TableHead className="text-white font-semibold bg-teal-600 min-w-[150px]">Timestamp</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {auditLogsData.map((log) => (
+                <TableRow key={log.id}>
+                  <TableCell className="font-medium">{log.actorName}</TableCell>
+                  <TableCell>{log.action}</TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={
+                        log.type === "plan_creation"
+                          ? "default"
+                          : log.type === "subscription"
+                            ? "secondary"
+                            : log.type === "discount_update"
+                              ? "outline"
+                              : "destructive"
+                      }
+                    >
+                      {log.type.replace("_", " ")}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>{log.timestamp}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </Card>
     </div>
   )
@@ -830,11 +851,23 @@ const data = [
 
   return (
     <div className="flex h-screen bg-gray-50">
+      {/* Mobile sidebar overlay */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
+      )}
+
       {/* Sidebar */}
-      <div className="w-64 bg-slate-800 text-white flex flex-col">
+      <div
+        className={`${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } fixed lg:relative lg:translate-x-0 w-64 bg-slate-800 text-white flex flex-col z-50 transition-transform duration-300 ease-in-out lg:transition-none`}
+      >
         {/* Logo/Header */}
-        <div className="p-6 border-b border-slate-700">
+        <div className="p-6 border-b border-slate-700 flex justify-between items-center">
           <h1 className="text-xl font-bold">SMS Admin</h1>
+          <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-white hover:text-gray-300">
+            <X className="h-6 w-6" />
+          </button>
         </div>
 
         {/* Navigation */}
@@ -845,7 +878,10 @@ const data = [
               return (
                 <li key={item.id}>
                   <button
-                    onClick={() => setActiveTab(item.id)}
+                    onClick={() => {
+                      setActiveTab(item.id)
+                      setSidebarOpen(false) // Close mobile sidebar when item is selected
+                    }}
                     className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
                       activeTab === item.id
                         ? "bg-slate-700 text-white"
@@ -853,7 +889,7 @@ const data = [
                     }`}
                   >
                     <Icon className="h-5 w-5" />
-                    {item.label}
+                    <span className="text-sm md:text-base">{item.label}</span>
                   </button>
                 </li>
               )
@@ -865,17 +901,22 @@ const data = [
         <div className="p-4 border-t border-slate-700">
           <button className="w-full flex items-center gap-3 px-3 py-2 text-slate-300 hover:bg-slate-700 hover:text-white rounded-lg transition-colors">
             <LogOut className="h-5 w-5" />
-            logout
+            <span className="text-sm md:text-base">logout</span>
           </button>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 px-6 py-4">
+        <header className="bg-white border-b border-gray-200 px-4 md:px-6 py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+            <div className="flex items-center gap-4">
+              <button onClick={() => setSidebarOpen(true)} className="lg:hidden text-gray-600 hover:text-gray-900">
+                <Menu className="h-6 w-6" />
+              </button>
+              <h1 className="text-xl md:text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+            </div>
             <div className="flex items-center gap-2">
               <span className="text-sm text-gray-600">👤 Admin</span>
             </div>
@@ -883,7 +924,7 @@ const data = [
         </header>
 
         {/* Content */}
-        <main className="flex-1 p-6 overflow-auto">{renderContent()}</main>
+        <main className="flex-1 p-4 md:p-6 overflow-auto">{renderContent()}</main>
       </div>
     </div>
   )
