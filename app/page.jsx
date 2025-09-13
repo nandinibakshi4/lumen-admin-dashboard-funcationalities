@@ -23,9 +23,27 @@ import {
   Calendar,
 } from "lucide-react"
 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts"
+
+
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("dashboard")
-
+const data = [
+  { name: "Jan", users: 30 },
+  { name: "Feb", users: 45 },
+  { name: "Mar", users: 60 },
+  { name: "Apr", users: 50 },
+  { name: "May", users: 80 },
+  { name: "Jun", users: 65 },
+]
   const plansData = [
     {
       id: 1,
@@ -356,8 +374,17 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="text-center text-gray-500">
             <BarChart3 className="h-12 w-12 mx-auto mb-4 opacity-50" />
-            <p>Analytics dashboard will be displayed here.</p>
-            <p className="text-sm mt-2">Charts, graphs, and detailed metrics about subscriptions and usage.</p>
+             <div className="h-72">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={data} margin={{ top: 20, right: 20, left: 0, bottom: 20 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="users" fill="#6366f1" radius={[6, 6, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
           </div>
         </div>
       </div>
